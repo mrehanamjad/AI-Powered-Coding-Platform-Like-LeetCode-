@@ -19,7 +19,7 @@ export interface Example {
 }
 
 
-interface TestCase {
+export interface TestCase {
     input: any;
     expected: unknown;
 }

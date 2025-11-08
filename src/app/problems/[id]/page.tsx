@@ -47,7 +47,7 @@ const [elapsedTime, setElapsedTime] = useState(0);
     if (hasPrevious) {
       const prevProblem = problems[currentIndex - 1];
       setSelectedProblemId(prevProblem.id);
-      router.push(`/problem/${prevProblem.id}`);
+      router.push(`/problems/${prevProblem.id}`);
       setElapsedTime(0);
     }
   };
@@ -56,7 +56,7 @@ const [elapsedTime, setElapsedTime] = useState(0);
     if (hasNext) {
       const nextProblem = problems[currentIndex + 1];
       setSelectedProblemId(nextProblem.id);
-      router.push(`/problem/${nextProblem.id}`);
+      router.push(`/problems/${nextProblem.id}`);
       setElapsedTime(0);
     }
   };
