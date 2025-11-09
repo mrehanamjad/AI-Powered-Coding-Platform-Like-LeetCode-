@@ -1,7 +1,7 @@
-import mongoose, { model, models, Schema } from "mongoose";
+import mongoose, { Document, model, models, Schema } from "mongoose";
 import bcrypt from "bcryptjs";
 
-export interface UserI {
+export interface UserI extends Document {
   userName: string;
   name: string;
   email: string;
@@ -9,11 +9,7 @@ export interface UserI {
   profilePic: { id: string; url: string };
   phone: string;
   bio: string;
-  followers: mongoose.Types.ObjectId[]; // Array of user IDs
-  followings: mongoose.Types.ObjectId[]; // Array of user IDs
-  savedReels: mongoose.Types.ObjectId[]; // Array of reel IDs
-  socialLinks: string[];
-  _id?: mongoose.Types.ObjectId;
+  _id: mongoose.Types.ObjectId;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -67,30 +63,7 @@ const UserSchema = new Schema<UserI>(
       type: String,
       maxlength: 150,
       default: "",
-    },
-    followers: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
-    followings: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
-    savedReels: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Reel",
-      },
-    ],
-    socialLinks: [
-      {
-        type: String,
-      },
-    ],
+    }
   },
   {
     timestamps: true,
