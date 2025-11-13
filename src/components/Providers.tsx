@@ -1,6 +1,7 @@
 "use client";
 import { ImageKitProvider } from "imagekitio-next";
 import { SessionProvider } from "next-auth/react";
+import { Toaster } from "sonner";
 
 const urlEndpoint = process.env.NEXT_PUBLIC_URL_ENDPOINT;
 const publicKey = process.env.NEXT_PUBLIC_PUBLIC_KEY;
@@ -34,6 +35,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         // authenticator={authenticator}
       >
         {children}
+    <Toaster position="top-right"  richColors={true}  />
       </ImageKitProvider>
     </SessionProvider>
   );

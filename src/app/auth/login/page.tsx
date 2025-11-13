@@ -8,6 +8,7 @@ import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import loginSchema from "@/schemas/login.schema";
 
 const Login = () => {
   const router = useRouter();
@@ -19,22 +20,26 @@ const Login = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showOutput, setShowOutput] = useState(false);
 
-  const handleSubmi = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setShowOutput(true);
-  };
-
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    const validation = loginSchema.safeParse(formData);
+    if (!validation.success) {
+      const firstError = validation.error.issues[0];
+      toast.error(firstError.message);
+      return;
+    }
+    
     setIsSubmitting(true);
+    setShowOutput(true);
 
     const result = await signIn("credentials", {
       email: formData.email,
       password: formData.password,
       redirect: false,
     });
-
+    
+    setIsSubmitting(true);
     if (result?.ok) {
       router.push("/");
     } else {
@@ -44,17 +49,13 @@ const Login = () => {
     }
   }
 
-  const handleComplete = () => {
-    console.log("Login successful!");
-    // redirect or show message here
-  };
-
   return (
-    <div className="min-h-screen bg-background text-foreground font-mono transition-colors duration-300">
-      <ThemeToggle />
+    <div 
+    style={{ backgroundImage: 'url(./problemsPg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+     className="min-h-screen bg- text-foreground font-mono transition-colors duration-300">
 
       <div className="container mx-auto px-4 py-8 lg:py-12">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[calc(100vh-4rem)]">
+        <div className=" lg:gap-12 h-full pt-18 max-sm:pt-10">
           {/* Left - Terminal Form */}
           <div className="order-2 lg:order-1 animate-fade-in">
             <div className="max-w-md mx-auto">
@@ -73,7 +74,6 @@ const Login = () => {
                 </p>
               </div>
 
-              {!showOutput ? (
                 <form onSubmit={handleSubmit} className="space-y-2">
                   <TerminalInput
                     label="email"
@@ -121,28 +121,6 @@ const Login = () => {
                     </Link>
                   </div>
                 </form>
-              ) : (
-                <TerminalOutput
-                  onComplete={handleComplete}
-                  outputLines={[
-                    { text: "> Validating user credentials...", delay: 500 },
-                    { text: "> Establishing secure connection...", delay: 800 },
-                    {
-                      text: "> Encrypting session token (AES-256)...",
-                      delay: 1200,
-                    },
-                    { text: "> Authenticating with mainframe...", delay: 1600 },
-                    { text: "> Access privileges confirmed.", delay: 2000 },
-                    {
-                      text: `> ✅ Login successful! Welcome back, ${
-                        formData.email.split("@")[0]
-                      }!`,
-                      delay: 2400,
-                    },
-                    { text: "> Redirecting to dashboard...", delay: 2800 },
-                  ]}
-                />
-              )}
 
               {/* Footer */}
               <div className="mt-8 pt-4 border-t border-terminal-border">
@@ -153,30 +131,6 @@ const Login = () => {
               </div>
             </div>
           </div>
-
-          {/* Right - ASCII Art */}
-          <div className="order-1 lg:order-2 flex items-center justify-center animate-fade-in">
-            <div className="relative w-full max-w-md">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-accent/20 to-transparent rounded-lg blur-3xl" />
-              <div className="relative bg-card border-2 border-terminal-border rounded-lg p-8 terminal-glow">
-                <ASCIIArt />
-                <div className="mt-6 space-y-2 text-xs text-muted-foreground">
-                  <div className="flex items-center gap-2">
-                    <span className="text-primary terminal-glow-text">●</span>
-                    <span>Instant access</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-accent terminal-glow-text">●</span>
-                    <span>Encrypted sessions</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-primary terminal-glow-text">●</span>
-                    <span>Developer-friendly design</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -184,3 +138,4 @@ const Login = () => {
 };
 
 export default Login;
+

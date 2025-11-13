@@ -81,7 +81,7 @@ const Problems = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      {/* <Header /> */}
       
       <div className="flex">
         <FilterPanel isOpen={isFilterOpen} onClose={() => setIsFilterOpen(false)} />
