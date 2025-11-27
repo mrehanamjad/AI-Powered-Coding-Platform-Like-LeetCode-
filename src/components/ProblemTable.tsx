@@ -37,7 +37,7 @@ const ProblemTable = ({ problems }: ProblemTableProps) => {
 
             {/* Status */}
             <div className="flex items-center gap-2 md:col-span-1">
-              <StatusIcon status={"unsolved"} />
+              <StatusIcon status={problem.status} />
               <span className="md:hidden text-xs text-muted-foreground capitalize">
                 {problem.status}
               </span>

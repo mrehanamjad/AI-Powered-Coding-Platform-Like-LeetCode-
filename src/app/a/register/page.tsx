@@ -407,7 +407,7 @@ const Signup = () => {
 
                   <div className="mt-6 text-center">
                     <Link
-                      href={"/login"}
+                      href={"/a/login"}
                       className="text-sm text-muted-foreground hover:text-primary transition-colors duration-300"
                     >
                       <span className="text-primary">&gt;</span> Already have an

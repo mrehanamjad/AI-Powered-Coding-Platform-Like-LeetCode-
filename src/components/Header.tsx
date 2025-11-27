@@ -116,16 +116,25 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { usePathname } from "next/navigation";
+import Container from "./Container";
+
 
 const Header = () => {
+  const pathname = usePathname();
   const { data: session } = useSession();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
+  if (pathname.split("/").length > 2) {
+    return null; 
+  }
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between px-4">
+      <Container >
+      <div className=" flex h-16 items-center justify-between px-4">
         {/* Logo */}
         <Link
           href="/"
@@ -249,6 +258,7 @@ const Header = () => {
           </nav>
         </div>
       )}
+      </Container>
     </header>
   );
 };

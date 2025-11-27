@@ -110,7 +110,7 @@ const Login = () => {
 
                   <div className="mt-6 text-center">
                     <Link
-                      href={"/signup"}
+                      href={"/a/register"}
                       className="text-sm text-muted-foreground hover:text-primary transition-colors duration-300"
                     >
                       <span className="text-primary">&gt;</span> Don’t have an
