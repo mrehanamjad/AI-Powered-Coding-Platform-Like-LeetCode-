@@ -1,9 +1,7 @@
 import { ProblemI } from "@/models/problem.model";
+import { SubmissionI } from "@/models/submission.model";
 import { TestCaseI } from "@/models/testcase.model";
 import mongoose from "mongoose";
-
-
-
 
 // utils/apiClient.ts
 type FetchOpts = {
@@ -68,19 +66,35 @@ class ApiClient {
   // ------------------------
 
   async getAProblem(problemId: string) {
-    return this.request<{problem: ProblemI; testCases: TestCaseI[]}>(`/problems/${problemId}`);
+    return this.request<{ problem: ProblemI; testCases: TestCaseI[] }>(
+      `/problems/${problemId}`
+    );
+  }
+
+  async createSubmission(body: SubmissionI) {
+    return this.request<SubmissionI>(`/submissions/`, {
+      method: "POST",
+      body,
+    });
+  }
+
+  async addOrUpdateSubmissionNote(submissionId: string, note: string) {
+    return this.request<SubmissionI>(`/submissions/${submissionId}/note`, {
+      method: "PATCH",
+      body: { note },
+    });
   }
 
   //   async editVideo(id: string, data: { title?: string; description?: string }) {
-//     return await this.myFetch(`/videos/${id}/edit`, {
-//       method: "PATCH",
-//       body: data,
-//     });
-//   }
+  //     return await this.myFetch(`/videos/${id}/edit`, {
+  //       method: "PATCH",
+  //       body: data,
+  //     });
+  //   }
 
-//   async deleteVideo(id: string) {
-//     return await this.myFetch(`/videos/${id}/delete`, { method: "DELETE" });
-//   }
+  //   async deleteVideo(id: string) {
+  //     return await this.myFetch(`/videos/${id}/delete`, { method: "DELETE" });
+  //   }
 }
 
 export const apiClient = new ApiClient();

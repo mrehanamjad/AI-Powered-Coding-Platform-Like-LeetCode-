@@ -49,3 +49,9 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
     - problem solved
     - posts
     - 
+
+# ToFIX:
+    - make the java and cpp working better it not work some mid and hard problems
+    - check the EditorPannal amke it more good with better error handling
+    - break EditorPannal into componets
+    - add better testcases 

@@ -4,17 +4,18 @@ export interface SubmissionI extends Document {
   _id: mongoose.Types.ObjectId;
   problemId: mongoose.Types.ObjectId;
   userId: mongoose.Types.ObjectId;
-  code: mongoose.Types.ObjectId;
+  code: string;
   language: string;
   totalTestCases: number;
   passedTestCases: number;
-  status: "success" | "failed" | "runtimeError" | "compileError" | "tle";
+  status: "accepted" | "wrongAnswer" | "runtimeError" | "compileError" | "tle";
   lastFailedTestCase?: {
     input: string;
     expectedOutput: string;
     actualOutput: string;
     error?: string; // optional, e.g., runtime error
   } | null;
+  note?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -32,7 +33,7 @@ const SubmissionSchema: Schema<SubmissionI> = new Schema(
       ref: "User",
     },
     code: {
-      type: Schema.Types.ObjectId,
+      type: String,
       required: true,
     },
     language: {
@@ -65,7 +66,7 @@ const SubmissionSchema: Schema<SubmissionI> = new Schema(
     status: {
       type: String,
       required: true,
-      enum: ["success", "failed", "runtimeError", "compileError", "tle"],
+      enum: ["accepted", "wrongAnswer", "runtimeError", "compileError", "tle"],
     },
     lastFailedTestCase: {
       type: {
@@ -75,6 +76,10 @@ const SubmissionSchema: Schema<SubmissionI> = new Schema(
         error: { type: String, default: null },
       },
       default: null,
+    },
+    note: {
+      type: String,
+      default: "",
     },
   },
   { timestamps: true }

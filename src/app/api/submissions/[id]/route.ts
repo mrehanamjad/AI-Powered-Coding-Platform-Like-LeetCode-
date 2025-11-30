@@ -39,7 +39,7 @@ export async function GET(
 
     // Authorization Check:
     // Ensure the logged-in user owns this submission
-    if (submission.userId.toString() !== (session.user as any).id) {
+    if (submission.userId.toString() !== session.user.id) {
         return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -53,3 +53,4 @@ export async function GET(
     );
   }
 }
+
