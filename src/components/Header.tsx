@@ -119,9 +119,8 @@ import Container from "./Container";
 
 const Header = () => {
   const pathname = usePathname();
-  const { data: session } = useSession();
+  const { data: session, status} = useSession();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   if (pathname.split("/").length > 2 && pathname.includes("problems/")) {

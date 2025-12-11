@@ -47,11 +47,18 @@ export const AuthOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session}) {
       if (user) {
         token.id = user.id;
         token.email = user.email;
         token.username = user.username;
+      }
+      // Handle Session Update 
+      if (trigger === "update" && session?.user) {
+        // We update the token with the new username passed from the client
+        if (session.user.username) {
+          token.username = session.user.username;
+        }
       }
       return token;
     },

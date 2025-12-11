@@ -9,7 +9,7 @@ import { UserStatisticI } from "@/models/userStatistic.model";
 import { StatsOverviewPrompI } from "@/types/compInterfaces";
 import React from "react";
 
-async function getUserProfile(username: string): Promise<PublicUser | null> {
+export async function getUserProfile(username: string): Promise<PublicUser | null> {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
   try {
     const res = await fetch(`${baseUrl}/api/user/${username}`, {
@@ -60,11 +60,11 @@ async function Page({ params }: { params: Promise<{ username: string }> }) {
   const userStats = await getUserStats(userData._id.toString());
 
   
-
+const createdAt = userData?.createdAt?.toString() || "";
 
   return (
     <div>
-      <ProfileHeader  />
+      <ProfileHeader  userId={userData._id.toString()} createdAt={createdAt as string } {...userData} languages={userStats?.languages || []} level={userStats?.level!} />
       <div className="md:grid md:grid-cols-4 gap-6 py-10 px-4 max-md:flex-col-reverse">
         <div className="md:col-span-3 mb-4">
           <StatsOverview data={{...userStats} as StatsOverviewPrompI} />

@@ -4,17 +4,6 @@ import { AuthOptions } from "@/lib/auth";
 import { connectionToDatabase } from "@/lib/db";
 import Submission, { SubmissionI } from "@/models/submission.model";
 import mongoose from "mongoose";
-import UserStatistic, { UserStatisticI } from "@/models/userStatistic.model";
-import Problem, { ProblemI } from "@/models/problem.model";
-
-import {
-  calculateScore,
-  calculateXP,
-  calculateLevel,
-  updateStreak,
-  isStreakBroken,
-  isStreakContinued,
-} from "@/lib/stats";
 import { updateUserStatistics } from "./updateUserStats";
 import { recordDailyActivity } from "./recordActivity";
 
