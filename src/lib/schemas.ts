@@ -27,3 +27,8 @@ export const passwordSchema = z.object({
 export type DetailsFormValues = z.infer<typeof detailsSchema>;
 export type UsernameFormValues = z.infer<typeof usernameSchema>;
 export type PasswordFormValues = z.infer<typeof passwordSchema>;
+export type UnifiedFormValues = 
+  | DetailsFormValues 
+  | UsernameFormValues 
+  | PasswordFormValues;
+export type CombinedFormValues = DetailsFormValues & UsernameFormValues & PasswordFormValues

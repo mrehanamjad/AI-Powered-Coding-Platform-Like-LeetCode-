@@ -18,7 +18,7 @@ export const Leaderboard = () => {
               Global <span className="bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent font-bold">Rankings</span>
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-light">
-              Compete with the world's best developers
+              Compete with the world&apos;s best developers
             </p>
           </div>
 

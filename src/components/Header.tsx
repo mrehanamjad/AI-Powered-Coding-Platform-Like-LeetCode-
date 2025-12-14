@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Code2, User, Menu, X, LogOut, Settings } from "lucide-react";
+import { Code2, User, Menu, X, LogOut, Settings, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./ThemeToggle";
 import Link from "next/link";
@@ -21,7 +21,7 @@ import Container from "./Container";
 const Header = () => {
   const pathname = usePathname();
   const router = useRouter();
-  const { data: session, status} = useSession();
+  const { data: session, status } = useSession();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -94,22 +94,30 @@ const Header = () => {
                       <span>Profile</span>
                     </DropdownMenuItem>
                   </Link>
-                  <Link   href={"/profile"} >
-                  <DropdownMenuItem>
-                    <Settings className="mr-2 h-4 w-4" />
-                    <span>Settings</span>
-                  </DropdownMenuItem>
+                  <Link href={"/profile"}>
+                    <DropdownMenuItem>
+                      <Settings className="mr-2 h-4 w-4" />
+                      <span>Settings</span>
+                    </DropdownMenuItem>
                   </Link>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem color="red" onClick={() => {
-                    signOut()
-                    router.push('/a/login')
-                    }}>
+                  <DropdownMenuItem
+                    color="red"
+                    onClick={() => {
+                      signOut();
+                      router.push("/a/login");
+                    }}
+                  >
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Log out</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
+            ) : status === "loading" ? (
+              <Button disabled>
+                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                Checking...
+              </Button>
             ) : (
               <Link href={"/a/login"}>
                 <Button className="hidden md:flex">Sign In</Button>

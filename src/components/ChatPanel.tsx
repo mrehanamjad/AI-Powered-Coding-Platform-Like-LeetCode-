@@ -22,7 +22,7 @@ export function ChatPanel() {
     if (savedMessages) {
       const parsed = JSON.parse(savedMessages);
       setMessages(
-        parsed.map((msg: any) => ({
+        parsed.map((msg:Message) => ({
           ...msg,
           timestamp: new Date(msg.timestamp),
         }))

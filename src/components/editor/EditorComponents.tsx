@@ -2,9 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { 
-  AlertOctagon, Check, ChevronDown, ChevronUp, Clock, 
-  Code2, Copy, Loader2, Play, RotateCcw, Save, Send, 
-  Terminal, Beaker, FileCheck, PenLine, AlertTriangle 
+  AlertOctagon, Check, ChevronDown, ChevronUp,  
+  Code2, Copy, Loader2, Play, RotateCcw,  Send, 
+  Terminal, Beaker, FileCheck
 } from "lucide-react";
 import { useState } from "react";
 import {  TabType } from "./types";
@@ -154,7 +154,7 @@ export function ExpandableCodeBlock({ code, language }: { code: string, language
 }
 
 // --- 5. TEST CASE DETAIL RENDERER ---
-export function TestCaseDetail({inputs,output, expected,isPassed,error ,paramNames }: { inputs: any[]; output?: any; expected: any; isPassed: boolean;error?: any; paramNames: string[] }) {
+export function TestCaseDetail({inputs,output, expected,isPassed,error ,paramNames }: { inputs: unknown[]; output?: unknown; expected: unknown; isPassed: boolean;error?: string; paramNames: string[] }) {
   if (!output && !error) return null;
   return (
     <div className="space-y-4 font-mono text-sm animate-in fade-in duration-300">
@@ -162,7 +162,7 @@ export function TestCaseDetail({inputs,output, expected,isPassed,error ,paramNam
         <div className="grid gap-1">
           <span className="text-xs text-muted-foreground">Input</span>
           <div className="p-3 bg-muted/30 rounded-md border text-xs">
-            {inputs.map((inp: any, i: number) => (
+            {inputs.map((inp, i: number) => (
                <div key={i} className="mb-1 last:mb-0">
                   <span className="text-blue-500 mr-2">{paramNames[i]} =</span>
                   {JSON.stringify(inp)}

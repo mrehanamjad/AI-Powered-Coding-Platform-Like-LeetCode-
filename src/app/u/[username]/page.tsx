@@ -74,7 +74,7 @@ async function Page({ params }: { params: Promise<{ username: string }> }) {
         createdAt={createdAt as string}
         {...userData}
         languages={userStats?.languages || []}
-        level={userStats?.level!}
+        level={userStats?.level || 1}
       />
       <div className="md:grid md:grid-cols-4 gap-6 py-10 px-4 max-md:flex-col-reverse">
         <div className="md:col-span-3 mb-4">

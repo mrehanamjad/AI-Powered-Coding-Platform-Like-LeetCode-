@@ -23,7 +23,6 @@ export function SubmissionsForProblem({ problemId, isEditor = true }: Submission
     null
   );
   const [noteContent, setNoteContent] = useState("");
-  const [savingNote, setSavingNote] = useState(false);
 
   // --- Fetch Submissions ---
   useEffect(() => {
@@ -219,7 +218,7 @@ export function SubmissionsForProblem({ problemId, isEditor = true }: Submission
           submissionId={currentSubmissionId!}
           closeModel={closeSubmissionModal}
           setSubmissionsForSubmissionTable={setSubmissions}
-          
+
         />
       )}
     </>

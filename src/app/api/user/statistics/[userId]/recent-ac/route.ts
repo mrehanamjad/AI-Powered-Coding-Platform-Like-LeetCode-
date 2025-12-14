@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectionToDatabase } from "@/lib/db";
 import Submission from "@/models/submission.model";
 import mongoose from "mongoose";
+import Problem from "@/models/problem.model";
 
 export async function GET(req: NextRequest,
       { params }: { params: Promise<{ userId: string }> }
@@ -24,21 +25,25 @@ export async function GET(req: NextRequest,
     })
       .sort({ createdAt: -1 }) // Newest first
       .limit(50) // Fetching 50 ensures we likely find 10 distinct consecutive groups
-      .populate("problemId", "title problemId") // Get Title and Frontend ID
+      .populate({
+        path: "problemId",
+        model: Problem,
+        select: "title problemId",
+      }) // Get Title and Frontend ID
       .select("status createdAt problemId") // Only fetch needed fields
       .lean();
 
     
 
     // 3. Filter Consecutive Duplicates
-    const distinctSubmissions: any[] = [];
+    const distinctSubmissions = [];
     let lastProblemId: string | null = null;
 
     for (const sub of rawSubmissions) {
       // Safety check: skip if problem was deleted from DB (problemId would be null)
       if (!sub.problemId) continue;
 
-      // @ts-ignore - ._id exists on populated object in lean()
+      // _id exists on populated object in lean()
       const currentProblemId = sub.problemId._id.toString();
 
       // IF this submission is for a DIFFERENT problem than the previous one, keep it.
@@ -46,8 +51,8 @@ export async function GET(req: NextRequest,
       if (currentProblemId !== lastProblemId) {
         distinctSubmissions.push({
           _id: sub._id,
-          title: (sub.problemId as any).title,
-          frontendProblemId: (sub.problemId as any).problemId,
+          title: sub.problemId.title,
+          frontendProblemId: sub.problemId.problemId,
           status: sub.status,
           createdAt: sub.createdAt,
         });
@@ -63,10 +68,12 @@ export async function GET(req: NextRequest,
     // 4. Return result
     return NextResponse.json(distinctSubmissions, { status: 200 });
 
-  } catch (error: any) {
+  } catch (error) {
     console.error("Recent Submissions Error:", error);
+    const message = error instanceof Error ? error.message : "Unknown error";
+
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: "Internal Server Error" + message },
       { status: 500 }
     );
   }

@@ -6,8 +6,7 @@
 // Score is used for leaderboards.
 // XP is used for leveling and user progression.
 // ============================================================================
-import { ProblemI } from '@/models/problem.model';
-import { SubmissionI } from '@/models/submission.model';
+
 import { UserStatisticI } from '@/models/userStatistic.model';
 
 
@@ -87,8 +86,6 @@ export function calculateXP({
   status: string;
   streakActive: boolean;
 }) {
-  let xp = 0;
-
   const normalizedStatus = status.toLowerCase();
 
   // Accepted submissions

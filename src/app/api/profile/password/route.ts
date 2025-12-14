@@ -51,8 +51,10 @@ export async function PATCH(request: Request) {
 
     return NextResponse.json({ message: "Password updated successfully" });
 
-  } catch (error: any) {
+  } catch (error) {
     console.error("Password Update Error:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+        const message = error instanceof Error ? error.message : "Unknown error";
+
+    return NextResponse.json({ error: "Internal Server Error" + message }, { status: 500 });
   }
 }

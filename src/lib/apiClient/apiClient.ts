@@ -52,10 +52,11 @@ class ApiClient {
         data: json as T,
         status,
       };
-    } catch (err: any) {
+    } catch (error) {
+          const message = error instanceof Error ? error.message : "Network error";
       return {
         success: false,
-        error: err.message ?? "Network error",
+        error: message ?? "Network error",
         status: 0,
       };
     }

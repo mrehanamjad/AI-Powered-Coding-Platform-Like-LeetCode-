@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2, PenLine, Save } from "lucide-react";
+import { Loader2,  Save } from "lucide-react";
 import { toast } from "sonner";
 import { apiClient } from "@/lib/apiClient/apiClient";
 import { SubmissionForProblemI } from "@/lib/apiClient/types";

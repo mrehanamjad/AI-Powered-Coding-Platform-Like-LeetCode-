@@ -35,13 +35,13 @@ export async function GET(req: NextRequest) {
 
     // 2. Get User Session (NextAuth)
     const session = await getServerSession(AuthOptions);
-    const userId = session?.user ? (session.user as any).id : null;
+    const userId = session?.user ? session.user.id : null;
 
     // 3. Build Aggregation Pipeline
-    const pipeline: any[] = [];
+    const pipeline: mongoose.PipelineStage[] = [];
 
     // --- A. Match Stage (Basic Filters) ---
-    const matchStage: any = {};
+    const matchStage: mongoose.FilterQuery<typeof Problem> = {};
 
     if (difficulties && difficulties.length > 0) {
       matchStage.difficulty = { $in: difficulties };
@@ -144,7 +144,9 @@ export async function GET(req: NextRequest) {
     }
 
     // --- D. Sorting Logic ---
-    let sortStage: any = { createdAt: -1 }; // Default fallback
+    let sortStage: mongoose.SortOrder | Record<string, 1|-1> = {
+      createdAt: -1,
+    }; // Default fallback
 
     // Map difficulty to numeric weights for logical sorting
     if (sort === "difficulty_asc" || sort === "difficulty_desc") {
@@ -209,14 +211,16 @@ export async function GET(req: NextRequest) {
     // Execute
     const myAggregate = Problem.aggregate(pipeline);
 
-    // @ts-ignore
+    // @ts-expect-error
     const result = await Problem.aggregatePaginate(myAggregate, options);
 
     return NextResponse.json(result, { status: 200 });
-  } catch (error: any) {
+  } catch (error) {
     console.error("GET /api/problems Error:", error);
+    const message = error instanceof Error ? error.message : "Unknown error";
+
     return NextResponse.json(
-      { error: "Failed to fetch problems", details: error.message },
+      { error: "Failed to fetch problems", details: message },
       { status: 500 }
     );
   }
@@ -269,10 +273,12 @@ export async function POST(req: NextRequest) {
       { message: "Problem created successfully", problem: newProblem },
       { status: 201 }
     );
-  } catch (error: any) {
+  } catch (error) {
     console.error("POST /api/problems Error:", error);
+    const message = error instanceof Error ? error.message : "Unknown error";
+
     return NextResponse.json(
-      { error: "Failed to create problem", details: error.message },
+      { error: "Failed to create problem", details: message },
       { status: 500 }
     );
   }

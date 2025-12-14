@@ -1,7 +1,7 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
-import { CircleDot, Dot } from "lucide-react";
+import {  Dot } from "lucide-react";
 
 type Skill = {
   name: string;

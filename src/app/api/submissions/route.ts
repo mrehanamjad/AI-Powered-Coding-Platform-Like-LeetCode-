@@ -6,6 +6,7 @@ import Submission, { SubmissionI } from "@/models/submission.model";
 import mongoose from "mongoose";
 import { updateUserStatistics } from "./updateUserStats";
 import { recordDailyActivity } from "./recordActivity";
+import Problem from "@/models/problem.model";
 
 /**
  * @method POST
@@ -100,17 +101,18 @@ export async function POST(req: NextRequest) {
           status,
         }),
       ]);
-      
     } catch (error) {
       console.error("Stats/Activity update failed", error);
     }
 
     // 8) RETURN SUCCESS
     return NextResponse.json(newSubmission, { status: 201 });
-  } catch (error: any) {
+  } catch (error) {
     console.error("POST /api/submissions Error:", error);
+    const message = error instanceof Error ? error.message : "Unknown error";
+
     return NextResponse.json(
-      { error: "Failed to save submission", details: error.message },
+      { error: "Failed to save submission", details: message },
       { status: 500 }
     );
   }
@@ -139,7 +141,10 @@ export async function GET(req: NextRequest) {
     const userId = session.user.id;
 
     // Build Query
-    const query: any = { userId: new mongoose.Types.ObjectId(userId) };
+    const query: {
+      userId: mongoose.Types.ObjectId;
+      problemId?: mongoose.Types.ObjectId;
+    } = { userId: new mongoose.Types.ObjectId(userId) };
 
     if (problemId) {
       query.problemId = new mongoose.Types.ObjectId(problemId);
@@ -154,7 +159,11 @@ export async function GET(req: NextRequest) {
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
-        .populate("problemId", "title difficulty problemId")
+        .populate({
+          path: "problemId",
+          model: Problem,
+          select: "title problemId",
+        })
         .lean(),
       Submission.countDocuments(query),
     ]);
@@ -171,10 +180,12 @@ export async function GET(req: NextRequest) {
       },
       { status: 200 }
     );
-  } catch (error: any) {
+  } catch (error) {
     console.error("GET /api/submissions Error:", error);
+    const message = error instanceof Error ? error.message : "Unknown error";
+
     return NextResponse.json(
-      { error: "Failed to fetch submissions", details: error.message },
+      { error: "Failed to fetch submissions", details: message },
       { status: 500 }
     );
   }

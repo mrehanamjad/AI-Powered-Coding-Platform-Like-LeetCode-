@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { problems } from "@/data/problems";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { TestCase } from "@/types/problem";
 
 type LogEntry = {
   problem: string;
@@ -13,13 +14,11 @@ type LogEntry = {
 };
 
 export default function SeedProblemsPage() {
-    const router = useRouter();
-    const {data:session} = useSession();
-    if(!session || (session && session.user.username !== "rehan7161")) {
-      router.push("/");
-    }
-
-
+  const router = useRouter();
+  const { data: session } = useSession();
+  if (!session || (session && session.user.username !== "rehan7161")) {
+    router.push("/");
+  }
 
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const [loading, setLoading] = useState(false);
@@ -35,13 +34,13 @@ export default function SeedProblemsPage() {
 
     let processedCount = 0;
 
-    const postTestCases = async (problemId: string, testCases: any[]) => {
+    const postTestCases = async (problemId: string, testCases: TestCase[]) => {
       let idx = 0;
       for (const testCase of testCases) {
         try {
           const payload = {
             problemId,
-            isHidden:idx < 3 ? false : true,
+            isHidden: idx < 3 ? false : true,
             input: testCase.input,
             expected: testCase.expected,
           };
@@ -57,11 +56,18 @@ export default function SeedProblemsPage() {
           if (response.status === 201) {
             addLog(result.testCase._id, "success", "Created successfully");
           } else if (response.status === 409) {
-            addLog(result.testCase._id, "skipped", "Already exists in database");
+            addLog(
+              result.testCase._id,
+              "skipped",
+              "Already exists in database"
+            );
           } else {
-            addLog(result.testCase._id, "error", result.error || "Unknown error");
+            addLog(
+              result.testCase._id,
+              "error",
+              result.error || "Unknown error"
+            );
           }
-
         } catch (error) {
           console.log(error);
         }
@@ -70,7 +76,6 @@ export default function SeedProblemsPage() {
     };
 
     for (const problem of problems) {
-
       try {
         // 1. Prepare the payload
         // IMPORTANT: Your data has 'id', but API expects 'problemId'
@@ -93,14 +98,19 @@ export default function SeedProblemsPage() {
         // 3. Handle Responses
         if (response.status === 201) {
           addLog(result.problem._id, "success", "Created successfully");
-            await postTestCases(result.problem._id.toString(), problem.testCases!);
+          await postTestCases(
+            result.problem._id.toString(),
+            problem.testCases!
+          );
         } else if (response.status === 409) {
           addLog(problem.title, "skipped", "Already exists in database");
         } else {
           addLog(problem.title, "error", result.error || "Unknown error");
         }
-      } catch (error: any) {
-        addLog(problem.title, "error", error.message);
+      } catch (error) {
+        const message =
+          error instanceof Error ? error.message : "Unknown error";
+        addLog(problem.title, "error", message);
       }
 
       processedCount++;

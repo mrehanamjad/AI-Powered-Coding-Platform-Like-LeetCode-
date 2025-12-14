@@ -1,5 +1,3 @@
-/* eslint-disable no-var */
-
 import { Connection } from "mongoose"
 
 declare global {

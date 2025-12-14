@@ -34,7 +34,7 @@ function RecentACTable({userId}:{userId:string}) {
     };
 
     fetchRecent();
-  }, []);
+  }, [userId]);
 
   if (loading) {
     return (

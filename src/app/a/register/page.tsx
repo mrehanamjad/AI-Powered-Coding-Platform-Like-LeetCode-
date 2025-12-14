@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 import { TerminalInput } from "@/components/AuthComponents/TerminalInput";
-import { ThemeToggle } from "@/components/ThemeToggle";
-import { ASCIIArt } from "@/components/AuthComponents/ASCIIArt";
 import Link from "next/link";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -19,7 +17,6 @@ const Signup = () => {
     confirmPassword: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -32,7 +29,6 @@ const Signup = () => {
       return;
     }
 
-    setLoading(true);
     setIsSubmitting(true);
 
     try {
@@ -70,7 +66,6 @@ const Signup = () => {
       console.error("Error registering user:", error);
       toast.error("Failed to register user. Please try again.");
     } finally {
-      setLoading(false);
       setIsSubmitting(false);
     }
   }

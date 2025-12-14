@@ -3,12 +3,12 @@ import { getServerSession } from "next-auth";
 import { AuthOptions } from "@/lib/auth";
 import { connectionToDatabase } from "@/lib/db";
 import Submission from "@/models/submission.model";
-import mongoose from "mongoose";
+import mongoose, { PipelineStage } from "mongoose";
 
 export async function GET(req: NextRequest) {
   try {
     const session = await getServerSession(AuthOptions);
-    
+
     if (!session || !session.user || !session.user.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
     const difficulty = searchParams.get("difficulty"); // "Easy", "Medium", "Hard"
 
     // 2. Base Pipeline
-    const pipeline: any[] = [
+    const pipeline: PipelineStage[] = [
       { $match: { userId: new mongoose.Types.ObjectId(userId) } },
       { $sort: { createdAt: -1 } },
       {
@@ -33,9 +33,9 @@ export async function GET(req: NextRequest) {
           lastSubmittedAt: { $first: "$createdAt" },
           lastStatus: { $first: "$status" },
           totalSubmissions: { $sum: 1 },
-          isSolved: { 
-            $max: { $cond: [{ $eq: ["$status", "accepted"] }, true, false] } 
-          }
+          isSolved: {
+            $max: { $cond: [{ $eq: ["$status", "accepted"] }, true, false] },
+          },
         },
       },
       {
@@ -54,8 +54,8 @@ export async function GET(req: NextRequest) {
     if (difficulty && difficulty !== "All") {
       pipeline.push({
         $match: {
-          "problemDetails.difficulty": difficulty 
-        }
+          "problemDetails.difficulty": difficulty,
+        },
       });
     }
 
@@ -80,19 +80,20 @@ export async function GET(req: NextRequest) {
 
     // 5. Execute Aggregation with Pagination
     const myAggregate = Submission.aggregate(pipeline);
-    
-    // @ts-ignore
+
+    // @ts-expect-error
     const results = await Submission.aggregatePaginate(myAggregate, {
       page,
       limit,
     });
 
     return NextResponse.json(results, { status: 200 });
+  } catch (error) {
+    console.error("GET/user API Error:", error);
+    const message = error instanceof Error ? error.message : "Unknown error";
 
-  } catch (error: any) {
-    console.error("API Error:", error);
     return NextResponse.json(
-      { error: "Internal Server Error", details: error.message },
+      { error: "Internal Server Error", details: message },
       { status: 500 }
     );
   }

@@ -62,10 +62,12 @@ export async function PATCH(request: Request) {
       message: "Username updated successfully",
       userName: updatedUser?.userName,
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error("Username Update Error:", error);
+        const message = error instanceof Error ? error.message : "Unknown error";
+
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: "Internal Server Error" + message },
       { status: 500 }
     );
   }

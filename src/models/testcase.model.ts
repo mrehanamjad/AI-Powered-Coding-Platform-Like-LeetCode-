@@ -1,9 +1,9 @@
-import mongoose, { Schema, Document, models } from "mongoose";
+import mongoose, { Schema,  models } from "mongoose";
 
 export interface TestCaseI {
   problemId: mongoose.Types.ObjectId;
-  input: any[];
-  expected: any;
+  input: unknown[];
+  expected: unknown;
   isHidden: boolean;
   _id: mongoose.Types.ObjectId;
   createdAt?: Date;

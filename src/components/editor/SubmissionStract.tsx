@@ -7,9 +7,9 @@ import { cn } from '@/lib/utils'
 import { SubmissionForProblemI } from '@/lib/apiClient/types'
 
 interface TestDetailI {
-    inputs: any[];
-    output: any;
-    expected: any;
+    inputs: unknown[];
+    output: unknown;
+    expected: unknown;
     error?: string;
     isPassed: boolean;
     paramNames: string[];

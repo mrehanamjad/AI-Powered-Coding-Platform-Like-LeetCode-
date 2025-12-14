@@ -104,7 +104,7 @@ ProblemSchema.plugin(aggregatePaginate);
 
 // Define the AggregatePaginateModel type
 interface ProblemModel<T extends Document> extends Model<T> {
-    aggregatePaginate: any;
+    aggregatePaginate: unknown;
 }
 
 const Problem = (models.Problem || mongoose.model<ProblemI>("Problem", ProblemSchema)) as ProblemModel<ProblemI>;

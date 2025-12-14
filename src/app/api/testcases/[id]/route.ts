@@ -26,6 +26,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 
     return NextResponse.json(testCase, { status: 200 });
   } catch (error) {
+    console.log("Error in GET/testcases/[id]", error);
     return NextResponse.json(
       { error: "Error retrieving test case" },
       { status: 500 }
@@ -55,6 +56,8 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 
     return NextResponse.json(updatedTestCase, { status: 200 });
   } catch (error) {
+    console.log("Error in POST/testcases/[id]", error);
+
     return NextResponse.json(
       { error: "Failed to update test case" },
       { status: 500 }
@@ -82,6 +85,8 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       { status: 200 }
     );
   } catch (error) {
+    console.log("Error in DELETE/testcases/[id]", error);
+
     return NextResponse.json(
       { error: "Failed to delete test case" },
       { status: 500 }

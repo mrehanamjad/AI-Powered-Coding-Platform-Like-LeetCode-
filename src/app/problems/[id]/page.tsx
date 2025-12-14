@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/resizable";
 import { ProblemPanel } from "@/components/ProblemPanel";
 import { EditorPanel } from "@/components/EditorPanel";
-import { ChatPanel } from "@/components/ChatPanel";
 import { ProblemHeader } from "@/components/ProblemHeader";
 import { ProblemSkeleton } from "@/components/skeletons/ProblemSkeleton"; // Import Skeleton
 import { ProblemNotFound } from "@/components/ProblemNotFound"; // Import Not Found

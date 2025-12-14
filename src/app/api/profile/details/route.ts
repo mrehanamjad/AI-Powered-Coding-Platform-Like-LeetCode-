@@ -64,10 +64,12 @@ export async function PATCH(request: Request) {
         bio: updatedUser.bio,
       },
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error("Details Update Error:", error);
+    const message = error instanceof Error ? error.message : "Unknown error";
+
     return NextResponse.json(
-      { error: error.message || "Internal Server Error" },
+      { error: message || "Internal Server Error" },
       { status: 500 }
     );
   }

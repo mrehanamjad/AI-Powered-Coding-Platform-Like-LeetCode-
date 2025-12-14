@@ -43,7 +43,7 @@ export async function GET(
       .lean();
 
     return NextResponse.json(submissions, { status: 200 });
-  } catch (error: unknown) {
+  } catch (error) {
     const message = error instanceof Error ? error.message : "Internal Error";
     console.error("GET /api/submission/[problemId] Error:", error);
 

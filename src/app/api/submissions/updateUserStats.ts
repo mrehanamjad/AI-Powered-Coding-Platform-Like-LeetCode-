@@ -40,7 +40,7 @@ export async function updateUserStatistics({
   if (!problem) throw new Error("Problem not found");
 
   // Initialize stats if user is new
-  let stats = userStats || new UserStatistic({ userId });
+  const stats = userStats || new UserStatistic({ userId });
 
   // 2. Determine Context
   // If count is 0 (or 1 and we just saved it), it's a first solve.

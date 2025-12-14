@@ -10,7 +10,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 import { 
-  Star, Trophy, Flame, Code, Target, Clock, 
+  Star,  Flame, Code, Target,  
   Award, Medal, Sun, Swords, 
   LucideIcon 
 } from 'lucide-react';

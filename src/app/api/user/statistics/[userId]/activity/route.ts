@@ -16,7 +16,7 @@ interface RouteContext {
 export async function GET(req: NextRequest, context: RouteContext) {
   try {
     const { userId } = await context.params;
-    
+
     // 1. Connect & Validate
     await connectionToDatabase();
     if (!mongoose.Types.ObjectId.isValid(userId)) {
@@ -25,11 +25,13 @@ export async function GET(req: NextRequest, context: RouteContext) {
 
     // 2. Parse Year (Default to current year)
     const { searchParams } = new URL(req.url);
-    const parseResult = querySchema.safeParse({ year: searchParams.get("year") });
+    const parseResult = querySchema.safeParse({
+      year: searchParams.get("year"),
+    });
     if (!parseResult.success) {
       return NextResponse.json({ error: "Invalid year" }, { status: 400 });
     }
-    
+
     const year = parseResult.data.year || new Date().getFullYear();
 
     // 3. Define Date Range (Jan 1 to Dec 31)
@@ -60,12 +62,16 @@ export async function GET(req: NextRequest, context: RouteContext) {
       year,
       totalSubmissions,
       // Return a map so frontend can easily merge with a full year calendar
-      data: activityMap, 
+      data: activityMap,
     });
-
   } catch (error) {
     console.error("Activity API Error:", error);
-    return NextResponse.json({ error: "Server Error" }, { status: 500 });
+    const message = error instanceof Error ? error.message : "Unknown error";
+
+    return NextResponse.json(
+      { error: "Server Error" + message },
+      { status: 500 }
+    );
   }
 }
 

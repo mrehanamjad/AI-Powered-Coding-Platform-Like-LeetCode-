@@ -1,4 +1,4 @@
-import { MessageSquare, TrendingUp, Award } from "lucide-react";
+import { MessageSquare, TrendingUp } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 export const Community = () => {

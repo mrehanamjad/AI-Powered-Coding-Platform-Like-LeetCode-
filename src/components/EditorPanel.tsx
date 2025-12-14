@@ -104,7 +104,7 @@ export function EditorPanel({
       setCode(savedCode || problem.starterCode[language] || "");
     }
     setLanguage(languageIS as keyof StarterCodeI);
-  }, [problem?._id, language, problem?.starterCode]);
+  }, [problem?._id, language, problem?.starterCode, languageIS]);
 
   const handleRunOrSubmit = async (type: "run" | "submit") => {
     if (!problem) return;
@@ -158,7 +158,7 @@ export function EditorPanel({
       // --- Status Logic ---
       let status: ExecutionStatus = "ACCEPTED";
       let errorDetails = "";
-      let parsedResults: any[] = [];
+      const parsedResults = [];
       let dbSubmissionId = "";
 
       if (result.compile && result.compile.code !== 0) {
@@ -224,7 +224,7 @@ export function EditorPanel({
         const lastFailed = parsedResults.find((r) => !r.passed);
         const submissionPayload: Partial<SubmissionI> = {
           problemId: problem._id as mongoose.Types.ObjectId,
-          userId: userId as any,
+          userId: new mongoose.Types.ObjectId(userId || ""),
           code,
           language,
           totalTestCases: cleanTestCases.length,
@@ -279,7 +279,7 @@ export function EditorPanel({
       {/* 1. Toolbar */}
       <EditorToolbar
         language={language}
-        setLanguage={(l) => setLanguage(l as any)}
+        setLanguage={(l) => setLanguage(l as keyof StarterCodeI)}
         isRunning={isRunning}
         isSubmitting={isSubmitting}
         onRun={() => handleRunOrSubmit("run")}
@@ -434,8 +434,7 @@ export function EditorPanel({
                           error={
                             runOutput.testResults?.[activeTestCaseId].error
                           }
-                          inputs={runOutput.testCasesWithInputs?.[activeTestCaseId].input!}
-                          
+                          inputs={runOutput.testCasesWithInputs?.[activeTestCaseId].input ?? []}
                           paramNames={problem.function.params}
                         />
                       </>

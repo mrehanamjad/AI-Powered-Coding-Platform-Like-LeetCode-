@@ -14,7 +14,7 @@ import Problem from "@/models/problem.model"; // Ensure this is imported
  */
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> } 
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(AuthOptions);
@@ -26,34 +26,38 @@ export async function GET(
     const { id: submissionId } = await params;
 
     if (!mongoose.Types.ObjectId.isValid(submissionId)) {
-        return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });
+      return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });
     }
 
     await connectionToDatabase();
 
     // 3. Fix MissingSchemaError by explicitly passing the Problem model to populate
-    const submission = await Submission.findById(submissionId)
-        .populate<{ problemId: PopulatedProblem }>({
-            path: "problemId",
-            model: Problem, // Explicitly use the imported model
-            select: "title problemId difficulty function"
-        }) 
-        .lean() as SubmissionI | null;
+    const submission = (await Submission.findById(submissionId)
+      .populate<{ problemId: PopulatedProblem }>({
+        path: "problemId",
+        model: Problem, // Explicitly use the imported model
+        select: "title problemId difficulty function",
+      })
+      .lean()) as SubmissionI | null;
 
     if (!submission) {
-      return NextResponse.json({ error: "Submission not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Submission not found" },
+        { status: 404 }
+      );
     }
 
     if (submission.userId.toString() !== session.user.id) {
-        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
     return NextResponse.json(submission, { status: 200 });
-
-  } catch (error: any) {
+  } catch (error) {
     console.error("GET /api/submissions/[id] Error:", error);
+    const message = error instanceof Error ? error.message : "Unknown error";
+
     return NextResponse.json(
-      { error: "Failed to fetch submission details", details: error.message },
+      { error: "Failed to fetch submission details", details: message },
       { status: 500 }
     );
   }

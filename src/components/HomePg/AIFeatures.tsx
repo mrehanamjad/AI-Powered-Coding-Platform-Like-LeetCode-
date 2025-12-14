@@ -77,7 +77,7 @@ export const AIFeatures = () => {
               </h3>
               <p className="text-muted-foreground font-light max-w-2xl mx-auto leading-relaxed">
                 Available 24/7 to answer questions, explain concepts, debug code, and guide you through challenges. 
-                It's like having a senior developer by your side, always ready to help.
+                It&apos;s like having a senior developer by your side, always ready to help.
               </p>
             </div>
           </div>

@@ -9,6 +9,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { toast } from "@/hooks/use-toast";
+import Image from "next/image";
 
 interface Avatar {
     id: string;
@@ -50,6 +51,7 @@ export function AvatarSection({ avatar, onAvatarChange }: AvatarSectionProps) {
     
     setIsLoading(true);
     try {
+      console.log(avatar)
       // 1. Upload Logic (Assuming you have an upload route)
       // const formData = new FormData();
       // formData.append("file", fileInputRef.current?.files[0]);
@@ -77,6 +79,7 @@ export function AvatarSection({ avatar, onAvatarChange }: AvatarSectionProps) {
          description: "Failed to upload image",
          variant: "destructive"
       });
+      console.log(error)
     } finally {
       setIsLoading(false);
     }
@@ -87,11 +90,13 @@ export function AvatarSection({ avatar, onAvatarChange }: AvatarSectionProps) {
       <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
         <div className="relative group">
           <div className="h-24 w-24 overflow-hidden rounded-full ring-4 ring-primary/20 transition-all group-hover:ring-primary/40">
-            <img
+            <Image
             //   src={avatar.url || "/default-avatar.png"}
                           src={"/problemsPg.png"}
               alt="Profile avatar"
               className="h-full w-full object-cover"
+              width={200}
+              height={200}
             />
           </div>
           <button
@@ -121,12 +126,14 @@ export function AvatarSection({ avatar, onAvatarChange }: AvatarSectionProps) {
           <div className="space-y-6 py-4">
             <div className="flex justify-center">
               <div className="relative h-32 w-32 overflow-hidden rounded-full ring-4 ring-primary/20">
-                <img
+                <Image
                 //   src={previewUrl || avatar.url || "/default-avatar.png"}
               src={"/problemsPg.png"}
 
                   alt="Avatar preview"
                   className="h-full w-full object-cover"
+                  width={200}
+                  height={200}
                 />
               </div>
             </div>

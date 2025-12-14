@@ -14,7 +14,7 @@ export function ProblemNotFound() {
       </h2>
       
       <p className="text-muted-foreground max-w-md mb-8">
-        The problem you are looking for doesn't exist, has been removed, or the URL is incorrect.
+        The problem you are looking for doesn&apos;t exist, has been removed, or the URL is incorrect.
       </p>
 
       <Button asChild variant="default" size="lg">

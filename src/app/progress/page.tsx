@@ -131,6 +131,7 @@ export default function PracticeHistory() {
         setData(json.docs || []);
         setPagination(json);
       } catch (err) {
+        console.log(err)
         setError("Could not load your practice history.");
       } finally {
         setLoading(false);

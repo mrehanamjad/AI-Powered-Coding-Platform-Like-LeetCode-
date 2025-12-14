@@ -2,7 +2,7 @@
 export const JavaScriptWrapper = (
   userCode: string,
   functionName: string,
-  testCases: Array<{ input: any[]; expected: any }>
+  testCases: Array<{ input: unknown[]; expected: unknown }>
 ) => {
   return `
 ${userCode}
@@ -48,7 +48,7 @@ for (let i = 0; i < testCases.length; i++) {
 export const PythonWrapper = (
   userCode: string,
   functionName: string,
-  testCases: Array<{ input: any[]; expected: any }>
+  testCases: Array<{ input: unknown[]; expected: unknown }>
 ) => {
   // Helper function to convert JS values to Python values
   const toPythonValue = (value: any): string => {
@@ -100,7 +100,7 @@ ${testCode
 export const JavaWrapper = (
   userCode: string,
   functionName: string,
-  testCases: Array<{ input: any[]; expected: any }>
+  testCases:Array<{ input: unknown[]; expected: unknown }>
 ) => {
   // Remove class declaration and closing brace more carefully
   let finalUserCode = userCode.trim();
@@ -204,7 +204,7 @@ ${testCode}
 export const CppWrapper = (
   userCode: string,
   functionName: string,
-  testCases: Array<{ input: any[]; expected: any }>
+  testCases:Array<{ input: unknown[]; expected: unknown }>
 ) => {
   // Clean up the user code - remove class declaration if present
   let finalUserCode = userCode.trim();

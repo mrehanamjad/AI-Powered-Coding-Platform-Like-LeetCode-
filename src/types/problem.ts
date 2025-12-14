@@ -20,6 +20,6 @@ export interface Example {
 
 
 export interface TestCase {
-    input: any;
+    input: unknown[];
     expected: unknown;
 }
