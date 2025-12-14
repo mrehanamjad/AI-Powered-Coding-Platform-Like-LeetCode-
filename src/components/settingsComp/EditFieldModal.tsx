@@ -60,7 +60,7 @@ export function EditFieldModal({
   const { data: session, update } = useSession();
 
   // Determine which schema and default values to use
-  // @ts-ignore
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   let schema: z.ZodType<UnifiedFormValues, any, any>;
   let defaultValues: UnifiedFormValues;
 

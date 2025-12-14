@@ -7,95 +7,95 @@ import { Button } from '@/components/ui/button'
 import RecentACTable from './RecentACTable'
 import Link from 'next/link'
 
-const activities = [
-  {
-    id: 1,
-    problem: 'Two Sum',
-    difficulty: 'Easy',
-    status: 'Accepted',
-    timestamp: '2 hours ago',
-    statusIcon: CheckCircle,
-    statusColor: 'text-green-500',
-  },
-  {
-    id: 2,
-    problem: 'Median of Two Sorted Arrays',
-    difficulty: 'Hard',
-    status: 'Accepted',
-    timestamp: '5 hours ago',
-    statusIcon: CheckCircle,
-    statusColor: 'text-green-500',
-  },
-  {
-    id: 3,
-    problem: 'Longest Substring Without Repeating Characters',
-    difficulty: 'Medium',
-    status: 'Accepted',
-    timestamp: '1 day ago',
-    statusIcon: CheckCircle,
-    statusColor: 'text-green-500',
-  },
-  {
-    id: 4,
-    problem: 'Container With Most Water',
-    difficulty: 'Medium',
-    status: 'Pending',
-    timestamp: '2 days ago',
-    statusIcon: Clock,
-    statusColor: 'text-yellow-500',
-  },
-  {
-    id: 5,
-    problem: 'Regular Expression Matching',
-    difficulty: 'Hard',
-    status: 'Rejected',
-    timestamp: '3 days ago',
-    statusIcon: AlertCircle,
-    statusColor: 'text-red-500',
-  },
-]
+// const activities = [
+//   {
+//     id: 1,
+//     problem: 'Two Sum',
+//     difficulty: 'Easy',
+//     status: 'Accepted',
+//     timestamp: '2 hours ago',
+//     statusIcon: CheckCircle,
+//     statusColor: 'text-green-500',
+//   },
+//   {
+//     id: 2,
+//     problem: 'Median of Two Sorted Arrays',
+//     difficulty: 'Hard',
+//     status: 'Accepted',
+//     timestamp: '5 hours ago',
+//     statusIcon: CheckCircle,
+//     statusColor: 'text-green-500',
+//   },
+//   {
+//     id: 3,
+//     problem: 'Longest Substring Without Repeating Characters',
+//     difficulty: 'Medium',
+//     status: 'Accepted',
+//     timestamp: '1 day ago',
+//     statusIcon: CheckCircle,
+//     statusColor: 'text-green-500',
+//   },
+//   {
+//     id: 4,
+//     problem: 'Container With Most Water',
+//     difficulty: 'Medium',
+//     status: 'Pending',
+//     timestamp: '2 days ago',
+//     statusIcon: Clock,
+//     statusColor: 'text-yellow-500',
+//   },
+//   {
+//     id: 5,
+//     problem: 'Regular Expression Matching',
+//     difficulty: 'Hard',
+//     status: 'Rejected',
+//     timestamp: '3 days ago',
+//     statusIcon: AlertCircle,
+//     statusColor: 'text-red-500',
+//   },
+// ]
 
-const myList = [
-  {
-    id: 1,
-    problem: 'Reverse Integer',
-    difficulty: 'Easy',
-    status: 'Todo',
-    timestamp: 'Added 1 week ago',
-    statusIcon: Clock,
-    statusColor: 'text-blue-500',
-  },
-  {
-    id: 2,
-    problem: 'Binary Tree Level Order Traversal',
-    difficulty: 'Medium',
-    status: 'In Progress',
-    timestamp: 'Added 3 days ago',
-    statusIcon: Clock,
-    statusColor: 'text-yellow-500',
-  },
-]
+// const myList = [
+//   {
+//     id: 1,
+//     problem: 'Reverse Integer',
+//     difficulty: 'Easy',
+//     status: 'Todo',
+//     timestamp: 'Added 1 week ago',
+//     statusIcon: Clock,
+//     statusColor: 'text-blue-500',
+//   },
+//   {
+//     id: 2,
+//     problem: 'Binary Tree Level Order Traversal',
+//     difficulty: 'Medium',
+//     status: 'In Progress',
+//     timestamp: 'Added 3 days ago',
+//     statusIcon: Clock,
+//     statusColor: 'text-yellow-500',
+//   },
+// ]
 
-const challenges = [
-  {
-    id: 1,
-    problem: '30-Day Challenge: Arrays',
-    difficulty: 'Medium',
-    status: 'In Progress',
-    timestamp: '15 of 30 completed',
-    statusIcon: CheckCircle,
-    statusColor: 'text-blue-500',
-  },
-  {
-    id: 2,
-    problem: 'Weekly Challenge: Dynamic Programming',
-    difficulty: 'Hard',
-    status: 'Active',
-    timestamp: '5 of 7 solved',
-    statusIcon: Clock,
-    statusColor: 'text-yellow-500',
-  },
-]
+// const challenges = [
+//   {
+//     id: 1,
+//     problem: '30-Day Challenge: Arrays',
+//     difficulty: 'Medium',
+//     status: 'In Progress',
+//     timestamp: '15 of 30 completed',
+//     statusIcon: CheckCircle,
+//     statusColor: 'text-blue-500',
+//   },
+//   {
+//     id: 2,
+//     problem: 'Weekly Challenge: Dynamic Programming',
+//     difficulty: 'Hard',
+//     status: 'Active',
+//     timestamp: '5 of 7 solved',
+//     statusIcon: Clock,
+//     statusColor: 'text-yellow-500',
+//   },
+// ]
 
 export default function RecentActivity({userId}:{userId:string}) {
   // const [currentPage, setCurrentPage] = useState(0)

@@ -1,6 +1,6 @@
-import { Code2 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
+import Logo from "./Logo";
 
 const Footer = () => {
   return (
@@ -9,10 +9,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <Code2 className="h-5 w-5 text-primary" />
-              <span className="font-bold">CodeArena</span>
-            </div>
+            <Logo />
             <p className="text-sm text-muted-foreground">
               Master coding challenges and ace your technical interviews.
             </p>

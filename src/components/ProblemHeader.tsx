@@ -2,7 +2,7 @@
 
 import { useState, useEffect, memo } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Code2, Timer, Play, Pause } from "lucide-react";
+import { ArrowLeft,  Timer, Play, Pause } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import Logo from "./Logo";
