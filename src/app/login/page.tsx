@@ -1,106 +1,71 @@
 "use client";
-
 import { useState } from "react";
 import { TerminalInput } from "@/components/AuthComponents/TerminalInput";
 import Link from "next/link";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
-import registerationSchema from "@/schemas/register.schema"; 
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import loginSchema from "@/schemas/login.schema";
 import Logo from "@/components/Logo";
 
-const Signup = () => {
+const Login = () => {
   const router = useRouter();
+
   const [formData, setFormData] = useState({
-    name: "",
     email: "",
     password: "",
-    confirmPassword: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    // ✅ Zod validation step
-    const validation = registerationSchema.safeParse(formData);
+    const validation = loginSchema.safeParse(formData);
     if (!validation.success) {
       const firstError = validation.error.issues[0];
       toast.error(firstError.message);
       return;
     }
-
+    
     setIsSubmitting(true);
+    const result = await signIn("credentials", {
+      email: formData.email,
+      password: formData.password,
+      redirect: false,
+    });
+    
+    setIsSubmitting(true);
+    if (result?.ok) {
+      router.push("/");
+    } else {
+      toast.error("Failed to login user");
 
-    try {
-      const response = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          password: formData.password,
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        toast.error(errorData.message || "Registration failed");
-        throw new Error(errorData.message || "Registration failed");
-      }
-
-      toast.success("Account created successfully!");
-      const result = await signIn("credentials", {
-        email: formData.email,
-        password: formData.password,
-        redirect: false,
-      });
-
-      if (result?.ok) {
-        router.push("/");
-      } else {
-        router.push("/login");
-      }
-    } catch (error) {
-      console.error("Error registering user:", error);
-      toast.error("Failed to register user. Please try again.");
-    } finally {
-      setIsSubmitting(false);
+      // setIsSubmitting(false);
     }
   }
 
-
   return (
-    <div className="min-h-screen bg-background text-foreground font-mono transition-colors duration-300">
+    <div 
+     className="min-h-screen   text-foreground font-mono transition-colors duration-300">
 
       <div className="container mx-auto px-4 py-8 lg:py-12">
-        <div className="grid  items-center min-h-[calc(100vh-4rem)]">
-          {/* Left side - Terminal Form */}
+        <div className=" lg:gap-12 h-full pt-18 max-sm:pt-10">
           <div className="order-2 lg:order-1 animate-fade-in">
             <div className="max-w-md mx-auto">
-              {/*  Header */}
+              {/* Header */}
               <div className="mb-8">
                 <div className="flex items-center gap-2 mb-2">
-                  <Logo size="2xl" href="#" />
-                  <span className="text-primary text-3xl animate-cursor-blink">|</span>
+                    <Logo size="2xl" href="#" />
+                  <span className="text-primary text-3xl animate-cursor-blink">
+                    |
+                  </span>
                 </div>
                 <p className="text-muted-foreground text-sm">
-                  &gt; Initialize new user profile
+                  &gt; Authenticate user credentials
                 </p>
               </div>
 
                 <form onSubmit={handleSubmit} className="space-y-2">
-                  <TerminalInput
-                    label="name"
-                    value={formData.name}
-                    onChange={(value) =>
-                      setFormData({ ...formData, name: value })
-                    }
-                    placeholder="enter_name"
-                  />
-
                   <TerminalInput
                     label="email"
                     type="email"
@@ -121,16 +86,6 @@ const Signup = () => {
                     placeholder="••••••••"
                   />
 
-                  <TerminalInput
-                    label="confirm_password"
-                    type="password"
-                    value={formData.confirmPassword}
-                    onChange={(value) =>
-                      setFormData({ ...formData, confirmPassword: value })
-                    }
-                    placeholder="••••••••"
-                  />
-
                   <button
                     type="submit"
                     disabled={isSubmitting}
@@ -138,40 +93,40 @@ const Signup = () => {
                   >
                     {isSubmitting ? (
                       <span className="flex items-center justify-center gap-2">
-                        <span>EXECUTING</span>
+                        <span>VERIFYING</span>
                         <span className="animate-cursor-blink">|</span>
                       </span>
                     ) : (
-                      "CREATE_ACCOUNT"
+                      "LOGIN"
                     )}
                   </button>
 
                   <div className="mt-6 text-center">
                     <Link
-                      href={"/a/login"}
+                      href={"/register"}
                       className="text-sm text-muted-foreground hover:text-primary transition-colors duration-300"
                     >
-                      <span className="text-primary">&gt;</span> Already have an
-                      account? <span className="underline font-bold">Log in</span>
+                      <span className="text-primary">&gt;</span> Don’t have an
+                      account?{" "}
+                      <span className="underline font-bold">Sign up</span>
                     </Link>
                   </div>
                 </form>
-              
 
-              {/* Terminal Footer */}
+              {/* Footer */}
               <div className="mt-8 pt-4 border-t border-terminal-border">
                 <p className="text-xs text-muted-foreground text-center">
-                  <span className="text-primary">&gt;</span> Powered by Code2DSA
-                  v2.1.0
+                  <span className="text-primary">&gt;</span> Code2DSA v2.1.0 —
+                  Secure access mode
                 </p>
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>
   );
 };
 
-export default Signup;
+export default Login;
+

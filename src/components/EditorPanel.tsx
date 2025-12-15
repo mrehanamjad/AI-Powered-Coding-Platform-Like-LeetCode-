@@ -142,7 +142,7 @@ export function EditorPanel({
     setActiveTab(type === "run" ? "result" : "submission");
     
     if (type == "submit" && (!session || !session?.user.id)) {
-      router.push("/a/login");
+      router.push("/login");
       return; // Added return to stop execution
     }
 

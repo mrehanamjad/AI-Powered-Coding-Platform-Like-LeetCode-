@@ -13,6 +13,11 @@ interface RouteContext {
   params: Promise<{ userId: string }>;
 }
 
+/**
+ * @method GET
+ * @desc Fetch all activities for contibussion/progress graph
+ */
+
 export async function GET(req: NextRequest, context: RouteContext) {
   try {
     const { userId } = await context.params;

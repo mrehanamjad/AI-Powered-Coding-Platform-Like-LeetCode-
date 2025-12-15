@@ -22,7 +22,7 @@ export default withAuth(
         }
 
         // public routes
-        if (pathname === "/" || pathname === "/api/videos") {
+        if (pathname === "/" || pathname.startsWith("/problems") || pathname.startsWith("/u") || pathname.startsWith("/api/problems") || pathname.startsWith("/api/user")) {
           return true;
         }
 

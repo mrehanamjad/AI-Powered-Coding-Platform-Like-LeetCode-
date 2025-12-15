@@ -100,7 +100,7 @@ const Header = () => {
                     color="red"
                     onClick={() => {
                       signOut();
-                      router.push("/a/login");
+                      router.push("/login");
                     }}
                   >
                     <LogOut className="mr-2 h-4 w-4" />
@@ -114,7 +114,7 @@ const Header = () => {
                 Checking...
               </Button>
             ) : (
-              <Link href={"/a/login"}>
+              <Link href={"/login"}>
                 <Button className="hidden md:flex">Sign In</Button>
               </Link>
             )}
