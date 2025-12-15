@@ -7,6 +7,7 @@ interface SubmissionTabProps {
   code: string;
   language: string;
   paramNames: string[];
+  problemStatement: string; // For AI code analyzer
 }
 
 export function SubmissionTab({
@@ -14,6 +15,7 @@ export function SubmissionTab({
   code,
   language,
   paramNames,
+  problemStatement,
 }: SubmissionTabProps) {
   const [activeCaseId, setActiveCaseId] = useState(0);
 
@@ -51,6 +53,7 @@ export function SubmissionTab({
         isPassed: testResult?.passed ?? false,
         paramNames,
       }}
+      problemStatement={problemStatement}
       note={output.note as string}
     />
   );

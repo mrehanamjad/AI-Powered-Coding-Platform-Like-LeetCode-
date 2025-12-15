@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { AICodeAnalyzerResposeI } from "@/lib/apiClient/types";
+import { Button } from "./ui/button";
 
 interface AICodeAnalysisModalProps {
   problemStatement: string;
@@ -71,7 +72,7 @@ export default function AICodeAnalysisModal({
 
   return (
     <>
-      <button
+      <Button
         onClick={() => {
           if (!code) {
              toast.error("Please write some code first.");
@@ -79,11 +80,11 @@ export default function AICodeAnalysisModal({
           }
           setIsOpen(true)
         }}
-        className="group flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-medium shadow-lg shadow-blue-500/25 transition-all active:scale-95"
+        className="cursor-pointer"
       >
         <Sparkles className="h-5 w-5 group-hover:animate-pulse" />
-        <span>AI Analysis</span>
-      </button>
+        <span>AI Code Analyzer</span>
+      </Button>
 
       {isOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 min-h-screen overflow-y-auto overflow-x-hidden bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">

@@ -88,7 +88,7 @@ export function EditorPanel({
   userId,
 }: EditorPanelProps) {
   // Initialize state with a default or the redux state immediately to prevent flicker
-  const languageIS = useAppSelector((state) => state.code.currentCodeLanguage);
+  const languageIS = useAppSelector((state) => state?.code.currentCodeLanguage);
   console.log("rerender")
   const [language, setLanguage] = useState<keyof StarterCodeI>(
     (languageIS as keyof StarterCodeI) || "javascript"
@@ -127,6 +127,7 @@ export function EditorPanel({
   }, [problem, language]); // Dependency array is now clean
 
   const handleRunOrSubmit = async (type: "run" | "submit") => {
+    console.log("i am in handleRunOrSubmit and type =",type)
     if (!problem) return;
     if (problem?.starterCode?.[language] === code) {
       toast.error(
@@ -181,7 +182,7 @@ export function EditorPanel({
       // --- Status Logic ---
       let status: ExecutionStatus = "ACCEPTED";
       let errorDetails = "";
-      const parsedResults: any[] = [];
+      const parsedResults: {testNumber: number, passed: boolean, output?: unknown, expected?: unknown, error?: string}[] = [];
       let dbSubmissionId = "";
 
       if (result.compile && result.compile.code !== 0) {
@@ -241,10 +242,10 @@ export function EditorPanel({
         status = "INTERNAL_ERROR";
         errorDetails = "No result returned.";
       }
-
       // --- Submission Logic ---
       if (type === "submit") {
         const lastFailed = parsedResults.find((r) => !r.passed);
+        console.log("problemId",problem._id,"userId",userId,"code",code,"language",language,"totalTestCases",cleanTestCases.length,"passedTestCases",parsedResults.filter((r) => r.passed).length,"status",mapStatusToDb(status),"error",errorDetails)
         const submissionPayload: Partial<SubmissionI> = {
           problemId: problem._id as mongoose.Types.ObjectId,
           userId: new mongoose.Types.ObjectId(userId || ""),
@@ -265,6 +266,7 @@ export function EditorPanel({
               }
             : null,
         };
+
         const saveRes = await apiClient.createSubmission(
           submissionPayload as SubmissionI
         );
@@ -283,6 +285,8 @@ export function EditorPanel({
         testCasesWithInputs: testCasesToRun,
       } as ExecutionResult;
       
+      console.log("Data to set",dataToSet)
+
       if (type === "submit") setSubmitOutput(dataToSet);
       else setRunOutput(dataToSet);
       
@@ -488,6 +492,7 @@ export function EditorPanel({
                     code={code}
                     language={language}
                     paramNames={problem.function.params}
+                    problemStatement={problem.description}
                   />
                 )}
               </div>

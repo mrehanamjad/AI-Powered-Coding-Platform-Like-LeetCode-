@@ -21,6 +21,7 @@ export interface PopulatedProblem {
     name: string;
     params: string[];
   };
+  description: string;
 }
 
 export type SubmissionResponseT = Omit<SubmissionI, "problemId"> & {

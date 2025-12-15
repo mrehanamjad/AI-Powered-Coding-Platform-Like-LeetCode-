@@ -86,6 +86,7 @@ function SubmissionPopup({ submissionId, isEditor=true,closeModel,setSubmissions
             isPassed: submission?.totalTestCases === submission?.passedTestCases,
             paramNames: submission?.problemId.function.params ?? []
         }}
+        problemStatement={submission.problemId.description}
         setSubmissionsForSubmissionTable={setSubmissionsForSubmissionTable}
     />
     </Card>

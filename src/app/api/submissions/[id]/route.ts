@@ -36,7 +36,7 @@ export async function GET(
       .populate<{ problemId: PopulatedProblem }>({
         path: "problemId",
         model: Problem, // Explicitly use the imported model
-        select: "title problemId difficulty function",
+        select: "title description problemId difficulty function",
       })
       .lean()) as SubmissionI | null;
 

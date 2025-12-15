@@ -17,6 +17,7 @@ import { apiClient } from "@/lib/apiClient/apiClient";
 import { toast } from "sonner";
 import { ProblemI } from "@/models/problem.model";
 import { TestCaseI } from "@/models/testcase.model";
+import { useSession } from "next-auth/react";
 
 type ProblemPageParams = {
   id: string;
@@ -25,7 +26,7 @@ type ProblemPageParams = {
 function ProblemPage() {
   const isMobile = useIsMobile();
   const params = useParams() as unknown as ProblemPageParams;
-  
+  const {data:session} = useSession();
   const problemId =  params?.id;
 
   const [theme, setTheme] = useState("dark");
@@ -117,6 +118,7 @@ function ProblemPage() {
                 problem={problem} 
                 testCases={testCases || []} 
                 theme={theme} 
+                userId={session?.user.id}
               />
             )}
             {/* {activeTab === "chat" && <ChatPanel />} */}
@@ -136,6 +138,7 @@ function ProblemPage() {
                 problem={problem} 
                 testCases={testCases || []} 
                 theme={theme} 
+                userId={session?.user.id}
               />
             </ResizablePanel>
 
