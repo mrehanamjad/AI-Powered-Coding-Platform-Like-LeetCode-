@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import {  useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,14 +14,19 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { PublicUser, EditableField } from "@/app/profile/page";
-import {
-  detailsSchema,
-  usernameSchema,
-  passwordSchema,
-  CombinedFormValues,
-} from "@/lib/schemas";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
+
+// Define local type since we removed the Zod inference
+interface FormInputs {
+  name?: string;
+  bio?: string;
+  phone?: string;
+  userName?: string;
+  currentPassword?: string;
+  newPassword?: string;
+  confirmPassword?: string;
+}
 
 interface EditFieldModalProps {
   isOpen: boolean;
@@ -57,26 +61,20 @@ export function EditFieldModal({
   const [showPassword, setShowPassword] = useState(false);
   const { data: session, update } = useSession();
 
-  // Determine which schema and default values to use
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  let schema: any = detailsSchema;
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  let defaultValues: any = {};
+  // Determine default values based on field
+  let defaultValues: FormInputs = {};
 
   if (field === "profile") {
-    schema = detailsSchema;
     defaultValues = {
-      name: currentUser.name,
+      name: currentUser.name || "",
       bio: currentUser.bio || "",
       phone: currentUser.phone || "",
     };
   } else if (field === "userName") {
-    schema = usernameSchema;
     defaultValues = {
-      userName: currentUser.userName,
+      userName: currentUser.userName || "",
     };
   } else if (field === "password") {
-    schema = passwordSchema;
     defaultValues = {
       currentPassword: "",
       newPassword: "",
@@ -84,26 +82,29 @@ export function EditFieldModal({
     };
   }
 
-  // Initialize React Hook Form
+  // Initialize React Hook Form without Zod Resolver
   const {
     register,
     handleSubmit,
     reset,
+    watch, // Needed to compare passwords manually
     formState: { errors, isSubmitting },
-  } = useForm({
-    resolver: zodResolver(schema),
+  } = useForm<FormInputs>({
     defaultValues,
     mode: "onChange",
   });
+
+  // Watch the newPassword field to validate confirmPassword against it
+  const newPasswordValue = watch("newPassword");
 
   // Reset form when modal opens or field changes
   useEffect(() => {
     if (isOpen) {
       reset(defaultValues);
     }
-  }, [isOpen, field, currentUser, defaultValues, reset]);
+  }, [isOpen, field, reset]); // Added 'field' to deps to prevent stale defaults
 
-  const onSubmit = async (data: CombinedFormValues) => {
+  const onSubmit = async (data: FormInputs) => {
     try {
       let endpoint = "";
       let body = {};
@@ -144,24 +145,21 @@ export function EditFieldModal({
       if (field === "profile") {
         onUpdateSuccess({ name: data.name, bio: data.bio, phone: data.phone });
       } else if (field === "userName") {
-        onUpdateSuccess({ userName: data.userName });
-        // If username changed, update the NextAuth session
-
-        await update({
-          ...session,
-          user: {
-            ...session?.user,
-            username: data.userName, // Make sure this key matches your session type
-          },
-        });
-        // trigger a refresh to ensure server components get new data if needed
-        // router.refresh();
+        if (data.userName) {
+            onUpdateSuccess({ userName: data.userName });
+            await update({
+            ...session,
+            user: {
+                ...session?.user,
+                username: data.userName,
+            },
+            });
+        }
       }
 
       onClose();
     } catch (error) {
       const message = error instanceof Error ? error.message : "Unknown error";
-
       toast.error(message);
     }
   };
@@ -184,28 +182,55 @@ export function EditFieldModal({
             <>
               <div className="space-y-2">
                 <Label htmlFor="name">Full Name</Label>
-                <Input id="name" {...register("name")} />
+                <Input
+                  id="name"
+                  {...register("name", {
+                    required: "Full Name is required",
+                    minLength: {
+                      value: 2,
+                      message: "Name must be at least 2 characters",
+                    },
+                  })}
+                />
                 {errors.name && (
                   <p className="text-sm text-destructive">
-                    {errors.name.message as string}
+                    {errors.name.message}
                   </p>
                 )}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="bio">Bio</Label>
-                <Textarea id="bio" rows={3} {...register("bio")} />
+                <Textarea
+                  id="bio"
+                  rows={3}
+                  {...register("bio", {
+                    maxLength: {
+                      value: 500,
+                      message: "Bio cannot exceed 500 characters",
+                    },
+                  })}
+                />
                 {errors.bio && (
                   <p className="text-sm text-destructive">
-                    {errors.bio.message as string}
+                    {errors.bio.message}
                   </p>
                 )}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="phone">Phone Number</Label>
-                <Input id="phone" {...register("phone")} />
+                <Input
+                  id="phone"
+                  {...register("phone", {
+                    // Optional basic regex for phone validation
+                    pattern: {
+                      value: /^\+?[0-9\s-]{10,20}$/,
+                      message: "Invalid phone number format",
+                    },
+                  })}
+                />
                 {errors.phone && (
                   <p className="text-sm text-destructive">
-                    {errors.phone.message as string}
+                    {errors.phone.message}
                   </p>
                 )}
               </div>
@@ -216,10 +241,23 @@ export function EditFieldModal({
           {field === "userName" && (
             <div className="space-y-2">
               <Label htmlFor="userName">Username</Label>
-              <Input id="userName" {...register("userName")} />
+              <Input
+                id="userName"
+                {...register("userName", {
+                  required: "Username is required",
+                  minLength: {
+                    value: 3,
+                    message: "Username must be at least 3 characters",
+                  },
+                  pattern: {
+                    value: /^[a-zA-Z0-9_]+$/,
+                    message: "Username can only contain letters, numbers, and underscores",
+                  },
+                })}
+              />
               {errors.userName && (
                 <p className="text-sm text-destructive">
-                  {errors.userName.message as string}
+                  {errors.userName.message}
                 </p>
               )}
             </div>
@@ -234,7 +272,9 @@ export function EditFieldModal({
                   <Input
                     id="currentPassword"
                     type={showPassword ? "text" : "password"}
-                    {...register("currentPassword")}
+                    {...register("currentPassword", {
+                      required: "Current password is required",
+                    })}
                   />
                   <button
                     type="button"
@@ -250,7 +290,7 @@ export function EditFieldModal({
                 </div>
                 {errors.currentPassword && (
                   <p className="text-sm text-destructive">
-                    {errors.currentPassword.message as string}
+                    {errors.currentPassword.message}
                   </p>
                 )}
               </div>
@@ -260,11 +300,17 @@ export function EditFieldModal({
                 <Input
                   id="newPassword"
                   type={showPassword ? "text" : "password"}
-                  {...register("newPassword")}
+                  {...register("newPassword", {
+                    required: "New password is required",
+                    minLength: {
+                      value: 6,
+                      message: "Password must be at least 6 characters",
+                    },
+                  })}
                 />
                 {errors.newPassword && (
                   <p className="text-sm text-destructive">
-                    {errors.newPassword.message as string}
+                    {errors.newPassword.message}
                   </p>
                 )}
               </div>
@@ -274,11 +320,20 @@ export function EditFieldModal({
                 <Input
                   id="confirmPassword"
                   type={showPassword ? "text" : "password"}
-                  {...register("confirmPassword")}
+                  {...register("confirmPassword", {
+                    required: "Please confirm your password",
+                    validate: (val) => {
+                      if (!val) return "Please confirm your password";
+                      if (val !== newPasswordValue) {
+                        return "Passwords do not match";
+                      }
+                      return true;
+                    },
+                  })}
                 />
                 {errors.confirmPassword && (
                   <p className="text-sm text-destructive">
-                    {errors.confirmPassword.message as string}
+                    {errors.confirmPassword.message}
                   </p>
                 )}
               </div>
