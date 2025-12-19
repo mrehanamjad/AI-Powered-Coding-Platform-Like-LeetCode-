@@ -1,57 +1,113 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+# Code2DSA 🚀
 
-First, run the development server:
+### AI-Powered Coding Platform (LeetCode-like)
+
+Code2DSA is a full-stack, AI-powered coding platform designed to help developers practice Data Structures & Algorithms efficiently. It provides real-time code execution, multi-test case submissions, performance tracking, and an AI-based code reviewer that analyzes solutions and offers improvement suggestions.
+
+---
+
+## ✨ Features
+
+* 🧠 **DSA Problem Solving** – Practice curated coding problems
+* ▶️ **Code Execution** – Run code instantly against custom inputs
+* ✅ **Multi-Test Case Submissions** – Submit solutions against multiple test cases
+* 🌍 **Multiple Language Support** - JavaScript, Python, Java, C++ and others
+* 🎯 **Filtering** - Difficulty & Topic-Based
+* 🤖 **AI Code Reviewer** – Analyze solutions, suggest optimizations, and provide feedback
+* 📐 **AI-Based Complexity Analysis** - Time & Space complexity
+* 🔐 **Authentication** – Secure login using NextAuth
+* 👤 **User Profiles** – Track solved problems, submissions, and performance stats
+* 📊 **Submission History & Analytics** – Monitor progress over time
+
+---
+
+## 🛠 Tech Stack
+
+**Frontend & Backend**
+
+* Next.js (Full Stack)
+* TypeScript
+* Tailwind CSS
+
+**Authentication**
+
+* NextAuth
+
+**AI Integration**
+
+* OpenAI Agent SDK
+
+**Database**
+
+* MongoDB
+
+
+---
+
+## 🚀 Live Demo
+
+🔗 **Live App:**  [https://code2dsa.vercel.app](https://code2dsa.vercel.app)
+
+---
+
+## ⚙️ Installation & Setup
+
+1. **Clone the repository**
+
+```bash
+git clone https://github.com/mrehanamjad/code2dsa.git
+cd code2dsa
+```
+
+2. **Install dependencies**
+
+```bash
+npm install
+```
+
+3. **Environment Variables**
+
+Create a `.env.local` file and add:
+
+```env
+MONGODB_URI=your_mongodb_connection_string
+NEXTAUTH_SECRET=your_secret_key
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+GEMINI_API_KEY=your_gemini_api_key
+```
+
+4. **Run the development server**
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000` in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 👨‍💻 Author
 
-## Learn More
+**Muhammad Rehan Amjad**
 
-To learn more about Next.js, take a look at the following resources:
+* 🌐 Portfolio: [https://www.rehanamjad.vercel.app](https://www.rehanamjad.vercel.app)
+* 🐙 GitHub: [https://github.com/mrehanamjad](https://github.com/mrehanamjad)
+* 💼 LinkedIn: [https://linkedin.com/in/mrehanamjad](https://linkedin.com/in/mrehanamjad)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## ⭐ Support
 
-## Deploy on Vercel
+If you find this project helpful, consider giving it a ⭐ on GitHub — it really helps!
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+If you want, I can also:
 
+* make a **shorter README** (startup-style)
+* add **architecture diagrams**
+* write a **contributing.md**
+* optimize it for **open-source visibility**
 
-# Features To Add:
-- authentication
-- home
-- problem page
-- solution coding page
-    - 
-- comunity
-    -  post - crud reply like
-    - 
-- user profile
-    - problem solved
-    - posts
-    - 
-
-# ToFIX:
-    - make the java and cpp working better it not work some mid and hard problems
-    - check the EditorPannal amke it more good with better error handling
-    - break EditorPannal into componets
-    - add better testcases 
+Just tell me 👌

@@ -45,7 +45,6 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import Logo from "@/components/Logo";
 
 // --- Configuration ---
 
@@ -210,9 +209,6 @@ export default function CodeCompiler() {
       {/* 1. Header */}
       <header className="h-14 border-b flex items-center justify-between px-4 bg-muted/20 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-10">
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 text-primary">
-            <Logo />
-          </div>
           <Separator orientation="vertical" className="h-6 hidden md:block" />
           
           {/* Active Language Display (Mobile/Desktop) */}

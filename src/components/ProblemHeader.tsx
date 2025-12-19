@@ -43,8 +43,8 @@ export const ProblemHeader = memo(function ProblemHeader() {
         >
           <ArrowLeft className="h-5 w-5" />
         </Button>
-        
-        <Logo href="#" />
+        <div className="max-sm:hidden">
+        <Logo href="#" /></div>
 
       </div>
 
